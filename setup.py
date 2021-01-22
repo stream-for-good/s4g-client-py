@@ -13,14 +13,14 @@ with open(path.join(path.abspath(path.dirname(__file__)), 'README.md'),
 
 setup(
     # Basic project information
-    name='python3-boilerplate',
-    version='0.0.4',
+    name='s4gpy',
+    version='0.0.1',
     # Authorship and online reference
-    author='Basti Tee',
-    author_email='basti.tee@posteo.de',
-    url='https://github.com/BastiTee/python3-boilerplate',
+    author='Nicolas Herbaut',
+    author_email='nicolas.herbaut@univ-paris1.fr',
+    url='https://github.com/stream-for-good/s4g-client-py',
     # Detailled description
-    description='A best-practices template project for Python3 modules.',
+    description='S4G/discoverability API Wrapper.',
     long_description=long_description,
     long_description_content_type='text/markdown',
     keywords='sample setuptools development',
