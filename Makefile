@@ -55,7 +55,7 @@ isort:
 
 lint:
 	@echo Run code formatting checks against source code base
-	pipenv run flake8 my_module tests
+	pipenv run flake8 s4gpy tests
 
 build: test coverage isort lint
 	@echo Run setup.py-based build process to package application
@@ -68,8 +68,8 @@ publish: all
 	git push --tags
 
 run:
-	@echo Execute my_module directly
-	pipenv run python -m my_module
+	@echo Execute s4gpy directly
+	pipenv run python -m s4gpy
 
 fetch-latest-boilerplate:
 	@echo Fetch latest python3-boilerplate version from github

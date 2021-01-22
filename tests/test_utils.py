@@ -11,8 +11,8 @@ import json  # noqa: F401
 from os import path  # noqa: F401
 from re import IGNORECASE, sub  # noqa: F401
 
-import my_module  # noqa: F401
-from my_module.utils import add_two_numbers
+import s4gpy  # noqa: F401
+from s4gpy.utils import add_two_numbers
 
 import pytest
 import requests  # noqa: F401

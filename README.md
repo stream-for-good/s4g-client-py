@@ -44,7 +44,7 @@ git pull py3template master --allow-unrelated-histories
 - Do whatever is necessary to remove the boilerplate you don't need, e.g.
 
 ```shell
-rm -rf my_module tests/test_utils.py __rename__.sh
+rm -rf s4gpy tests/test_utils.py __rename__.sh
 ```
 
 - Commit your changes and push to your project
