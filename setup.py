@@ -14,7 +14,7 @@ with open(path.join(path.abspath(path.dirname(__file__)), 'README.md'),
 setup(
     # Basic project information
     name='s4gpy',
-    version='0.0.1',
+    version='0.0.3',
     # Authorship and online reference
     author='Nicolas Herbaut',
     author_email='nicolas.herbaut@univ-paris1.fr',
@@ -23,7 +23,7 @@ setup(
     description='S4G/discoverability API Wrapper.',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    keywords='sample setuptools development',
+    keywords='streaming, recommendation, science',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',

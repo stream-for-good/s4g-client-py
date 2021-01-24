@@ -57,7 +57,7 @@ lint:
 	@echo Run code formatting checks against source code base
 	pipenv run flake8 s4gpy tests
 
-build: test coverage isort lint
+build: test coverage #isort #lint
 	@echo Run setup.py-based build process to package application
 	pipenv run python setup.py bdist_wheel
 
