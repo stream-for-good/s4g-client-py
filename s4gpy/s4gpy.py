@@ -1,86 +1,11 @@
 """Stream4good/Discoverability API Wrapper."""
-from urllib.parse import urljoin
 import requests
-from requests import Session
 
-
-
-class ConsoAPI:
-    """This class wraps the conso-api."""
-
-    def __init__(self, session):
-        """Initialize a new ConsoAPI.
-
-        It works by inheriting from the session object of a S4GAPI.
-        """
-        self.session = session
-
-    def create_direct_schedule(self, airing_time, video_id):
-        """Publish or updated a new direct schedule."""
-        self.session.post('/direct',
-            json=[{'airing_time': airing_time, 'video_id': video_id}])
-
-
-class UserAPI:
-    """This class wraps the user API"""
-
-    def __init__(self, session):
-        """intialiaze a new Credential API"""
-        self.session = session
-
-    def get_users(self):
-        """returns a list of users."""
-        resp= self.session.get("/api/users")
-        return resp.json()
-
-    def get_user(self,user_id):
-        return self.session.get(f"/api/user/{user_id}").json()
-
-
-
-class CredentialAPI():
-    """Wraps credential API."""
-
-    def __init__(self, session):
-        """intialiaze a new Credential API"""
-        self.session = session
-
-    def get_credentials(self, provider):
-        """Get a tuple containing credentials for the supplied provider."""
-        credentials = self.session.get(f'/providers/{provider}').json()
-        single_credentials_link = credentials['links'][0]['href']
-
-        single_credentials = self.session.get(
-            single_credentials_link,
-        ).json()
-        login = single_credentials['credentials']['login']
-        password = single_credentials['credentials']['password']
-        return login, password
-
-
-class S4GSession(Session):
-    """Wraps a session to provide API baseline."""
-    def __init__(self, prefix_url, access_token=None):
-        """initialize baseline for API"""
-        self.prefix_url = prefix_url
-        self.access_token = access_token
-        super(S4GSession, self).__init__()
-
-    def request(self, method, url, *args, **kwargs):
-        url = urljoin(self.prefix_url, url)
-        if self.access_token is not None:
-            if 'headers' in kwargs:
-                headers = kwargs["headers"]
-            else:
-                headers = {}
-                kwargs["headers"] = headers
-            headers.update(
-                {'Authorization':
-                 f'Bearer {self.access_token}'})
-        return super(S4GSession, self).request(method,
-                                               url,
-                                               *args,
-                                               **kwargs)
+from s4gpy.api.direct import DirectAPI
+from s4gpy.api.consoapi import ConsoAPI
+from s4gpy.api.credentials import CredentialAPI
+from s4gpy.api.user import UserAPI
+from s4gpy.s4gsession import S4GSession
 
 
 class S4GAPI:
@@ -131,6 +56,13 @@ class S4GAPI:
     def get_user_api(self):
         """Return a configured instance of the ConsoAPI."""
         return UserAPI(
+            S4GSession(
+                prefix_url=f'{self.protocol}://api.{self.root_dns}',
+                access_token=self.access_token))
+
+    def get_direct_api(self):
+        """Return a configured instance of the ConsoAPI."""
+        return DirectAPI(
             S4GSession(
                 prefix_url=f'{self.protocol}://api.{self.root_dns}',
                 access_token=self.access_token))
