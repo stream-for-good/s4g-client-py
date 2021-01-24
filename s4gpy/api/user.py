@@ -21,4 +21,5 @@ class UserAPI:
         return munchify(users)
 
     def get_user(self, user_id):
+        """get information about a particular user."""
         return munchify(self.session.get(f"/api/user/{user_id}").json())

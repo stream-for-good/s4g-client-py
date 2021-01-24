@@ -1,72 +1,123 @@
-# python3-boilerplate ![CI](https://github.com/BastiTee/python3-boilerplate/workflows/CI/badge.svg)
+# S4Gpy a python client library for Stream-for-Good Project
 
-> A best-practices template project for Python3 modules
+This client api can be used to perform analysis of S4G dataset with Python3.
 
----
+It closely mirros the HATEAOS from the Rest API so that when requesting data, the `links` information are automatically converted to functions that can be called from the API.
 
-**Disclaimer**: If you see this on [pypi.org](https://pypi.org/project/python3-boilerplate/) please note that the project is only published here for testing purposes. Please visit [GitHub](https://github.com/BastiTee/python3-boilerplate) for the related template project.
+For example with the user API
 
----
+![](userAPI.png)
 
-## Setup
+you can get a Python version with the following syntax:
 
-- Make sure that `python3` and `pip3` is installed and available on the path (on Ubuntu: `sudo apt-get install python3 python3-pip`)
-- On first checkout run `make venv` to initialize the project configuration
-- Refer to [the Makefile](Makefile) to learn about the various operations available
-- To rename the project you can use [the provided script](__rename__.sh)
+```python
+from s4gpy.s4gpy import S4GAPI
+#first register with your vod-prime.space credentials
+api=S4GAPI("foo","bar")
+#then get a user API object
+user_api=api.get_user_api()
 
-## Features
-
-- Basic project/module organization according to <https://packaging.python.org>
-- [Makefile](Makefile) management script
-- [pipenv](https://github.com/pypa/pipenv) and virtual environments
-- [distutils](https://docs.python.org/3/library/distutils.html)-based installer script
-- Unit testing with [pytest](https://docs.pytest.org/en/latest/)
-- Multicore/-interpreter testing with [tox](https://tox.readthedocs.io/en/latest/)
-- Linting ([flake8](http://flake8.pycqa.org)) and code formatting ([autopep8](https://github.com/hhatto/autopep8)) support
-- [isort](https://pypi.org/project/isort/) support for automated import sorting
-- Publishing to PyPi.org at <https://pypi.org/project/python3-boilerplate/>
-- [vscode](https://code.visualstudio.com/) editor configuration including plugin recommendations, debugging support, unit test discovery and on-save formatting
-- [Github actions](https://github.com/BastiTee/python3-boilerplate/actions) continuous integration
-
-## How to use in existing project
-
-To use it in an existing project you can merge the remote changes to your project.
-
-- Add remote to access the template project
-
-```shell
-git remote add py3template git@github.com:BastiTee/python3-boilerplate.git
-git pull py3template master --allow-unrelated-histories
+#get the users from the API
+for u in user_api.get_users(): 
+    #for each user, follow the all-thumbnails link by calling the all_thumbnails() function.
+    for t in u.all_thumbnails()["thumbnails"]: 
+        print(f"{u.user.user_id};{t.row};{t.col};{t.video_id};{t.timestamp}")
 ```
 
-- Solve all merge conflicts and commit. Most likely there will be a lot
-- Do whatever is necessary to remove the boilerplate you don't need, e.g.
+this code prints out the users' id, and some metadata on thumbnails that were proposed to her.
 
-```shell
-rm -rf s4gpy tests/test_utils.py __rename__.sh
+```csv
+1f52213c-f31d-4dc9-bac5-35464b2ff1b9;4;1;81074110;1610984583.0
+1f52213c-f31d-4dc9-bac5-35464b2ff1b9;4;0;80994082;1610984583.0
+1f52213c-f31d-4dc9-bac5-35464b2ff1b9;6;0;81277950;1610984583.0
+1f52213c-f31d-4dc9-bac5-35464b2ff1b9;5;2;80232398;1610984583.0
+1f52213c-f31d-4dc9-bac5-35464b2ff1b9;5;3;80234304;1610984583.0
+1f52213c-f31d-4dc9-bac5-35464b2ff1b9;4;3;80095697;1610984583.0
+1f52213c-f31d-4dc9-bac5-35464b2ff1b9;5;0;80025678;1610984584.0
 ```
 
-- Commit your changes and push to your project
 
-## Resources
+## Installation
 
-- <http://packaging.python.org/>
-- <https://packaging.python.org/en/latest/distributing.html>
-- <https://pypi.org/>
-- <https://github.com/pypa/sampleproject>
-- <https://www.python.org/dev/peps/>
-- <https://www.python.org/dev/peps/pep-0008/>
-- <https://www.kennethreitz.org/essays/why-you-should-use-vs-code-if-youre-a-python-developer>
-- <https://code.visualstudio.com/docs/python/python-tutorial>
+### From Pypi
 
-## Future ideas and todos
+```bash
+pip install s4gpy
+```
 
-- Optional static type hints ([PEP 484](https://www.python.org/dev/peps/pep-0484/)) with [mypy](https://github.com/python/mypy)
-- Make sure [tox](https://tox.readthedocs.io/) is working as expected for supported Python versions
-- Introduce [black](https://github.com/psf/black) in favour of other linters
-- Introduce [pyproject.toml](https://www.python.org/dev/peps/pep-0518/) along with bleeding edge build tools like [flit](https://flit.readthedocs.io/en/latest/rationale.html) or [poetry](https://python-poetry.org/)
+### From source
 
-## Licensing
+```bash
+#uninstall first
+pip uninstall s4gpy
+make build
+pip install dist/*.whl
+```
 
-This project is licensed under [Apache License 2.0](LICENSE.txt).
+## Examples
+
+### Direct API
+
+Get the current direct schedule, with metadata from the companion platform-api
+
+```python
+from s4gpy.s4gpy import S4GAPI
+api=S4GAPI(<add your user here>,<add your password here>)
+for s in api.get_direct_api().get_direct_schedule(): 
+    try:
+        imdb_data=s.content().imdb_id()
+        genres="+".join([g["genre"] for g in imdb_data.data.genres])
+    except AttributeError: #in case platform.vod-prime.space fucks up things
+        print(f"{s.airing_time};{s.video_id};UNKNOWN;UNKNOWN")
+        continue
+    print(f"{s.airing_time};{s.video_id};{imdb_data.data.title};f{genres}")
+```
+
+### User API
+
+Show the row/cols of every watched video for each user
+
+```python
+from s4gpy.s4gpy import S4GAPI
+#create an API entrypoint
+api=S4GAPI("foo","bar")
+#get the user_api
+user_api=api.get_user_api()
+
+#for each user
+for u in user_api.get_users(): 
+    #get all the video she watched
+    watched_videos=[w.video_id for w in u.all_watches().watches]
+    #for all the thumbnails
+    for t in u.all_thumbnails()["thumbnails"]: 
+        #only dump the informations if the user has wached the video
+        if t.video_id in watched_videos:
+            print(f"{u.user.user_id};{t.row};{t.col};{t.video_id};{t.timestamp}")
+```
+
+### Direct API
+
+Get the current direct schedule, with metadata from the companion platform-api
+
+```python
+from s4gpy.s4gpy import S4GAPI
+api=S4GAPI(<add your user here>,<add your password here>)
+for s in api.get_direct_api().get_direct_schedule(): 
+    try:
+        imdb_data=s.content().imdb_id()
+        genres="+".join([g["genre"] for g in imdb_data.data.genres])
+    except AttributeError: #in case platform.vod-prime.space fucks up things
+        print(f"{s.airing_time};{s.video_id};UNKNOWN;UNKNOWN")
+        continue
+    print(f"{s.airing_time};{s.video_id};{imdb_data.data.title};f{genres}")
+```
+
+### Credential API
+
+Get some credentials for netflix to run a robot run
+
+```python
+from s4gpy.s4gpy import S4GAPI
+api=S4GAPI("foo","bar")
+login, password = api.get_credentials_api().get_credentials("netflix")
+```

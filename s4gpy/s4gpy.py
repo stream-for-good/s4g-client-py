@@ -66,3 +66,8 @@ class S4GAPI:
             S4GSession(
                 prefix_url=f'{self.protocol}://api.{self.root_dns}',
                 access_token=self.access_token))
+
+
+__all__ = [
+    'S4GAPI'
+]
