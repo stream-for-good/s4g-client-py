@@ -14,7 +14,7 @@ with open(path.join(path.abspath(path.dirname(__file__)), 'README.md'),
 setup(
     # Basic project information
     name='s4gpy',
-    version='0.0.3',
+    version='0.0.7',
     # Authorship and online reference
     author='Nicolas Herbaut',
     author_email='nicolas.herbaut@univ-paris1.fr',
@@ -24,21 +24,22 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     keywords='streaming, recommendation, science',
+    
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'Natural Language :: English',
         'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8'
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9'
     ],
     # Package configuration
     packages=find_packages(exclude=('tests',)),
     include_package_data=True,
-    python_requires='>= 3.6',
-    install_requires=[],
+    python_requires='>= 3.7',
+    install_requires=["requests~=2.25.1", "munch~=2.5.0"],
     # Licensing and copyright
     license='Apache 2.0'
 )

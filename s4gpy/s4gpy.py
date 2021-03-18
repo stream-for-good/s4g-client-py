@@ -6,6 +6,9 @@ from s4gpy.api.consoapi import ConsoAPI
 from s4gpy.api.credentials import CredentialAPI
 from s4gpy.api.user import UserAPI
 from s4gpy.s4gsession import S4GSession
+from s4gpy.api.netflixapi import NetflixAPI
+from s4gpy.api.companyapi import CompanyAPI
+
 
 
 class S4GAPI:
@@ -58,6 +61,19 @@ class S4GAPI:
         return UserAPI(
             S4GSession(
                 prefix_url=f'{self.protocol}://api.{self.root_dns}',
+                access_token=self.access_token))
+    def get_netflix_api(self):
+        """Return a configured instance of the NetflixAPI."""
+        return NetflixAPI(
+            S4GSession(
+                prefix_url=f'{self.protocol}://api.{self.root_dns}/api/netflix',
+                access_token=self.access_token))
+
+    def get_company_api(self):
+        """Return a configured instance of the NetflixAPI."""
+        return CompanyAPI(
+            S4GSession(
+                prefix_url=f'{self.protocol}://imdb-company-mapper.{self.root_dns}/',
                 access_token=self.access_token))
 
     def get_direct_api(self):

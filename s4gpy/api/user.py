@@ -9,7 +9,7 @@ class UserAPI:
     """This class wraps the user API"""
 
     def __init__(self, session):
-        """intialiaze a new Credential API"""
+        """intialiaze a new User API"""
         self.session = session
 
     def get_users(self):

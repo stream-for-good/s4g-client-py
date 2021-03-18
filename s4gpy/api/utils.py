@@ -8,9 +8,9 @@ def expand_links(session, d):
             rel = link["rel"]
             href = link["href"]
 
-            def call(address=href):
+            def call(address=href, **kwargs):
 
-                resp = session.get(address)
+                resp = session.get(address, params=kwargs)
                 if resp.status_code != 200:
                     logging.error(f"calling {address} failed : {resp.status_code}")
                     return ""

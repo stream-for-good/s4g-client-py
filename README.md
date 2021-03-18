@@ -18,9 +18,9 @@ api=S4GAPI("foo","bar")
 user_api=api.get_user_api()
 
 #get the users from the API
-for u in user_api.get_users(): 
+for u in user_api.get_users():
     #for each user, follow the all-thumbnails link by calling the all_thumbnails() function.
-    for t in u.all_thumbnails()["thumbnails"]: 
+    for t in u.all_thumbnails()["thumbnails"]:
         print(f"{u.user.user_id};{t.row};{t.col};{t.video_id};{t.timestamp}")
 ```
 
@@ -63,7 +63,7 @@ Get the current direct schedule, with metadata from the companion platform-api
 ```python
 from s4gpy.s4gpy import S4GAPI
 api=S4GAPI(<add your user here>,<add your password here>)
-for s in api.get_direct_api().get_direct_schedule(): 
+for s in api.get_direct_api().get_direct_schedule():
     try:
         imdb_data=s.content().imdb_id()
         genres="+".join([g["genre"] for g in imdb_data.data.genres])
@@ -85,11 +85,11 @@ api=S4GAPI("foo","bar")
 user_api=api.get_user_api()
 
 #for each user
-for u in user_api.get_users(): 
+for u in user_api.get_users():
     #get all the video she watched
     watched_videos=[w.video_id for w in u.all_watches().watches]
     #for all the thumbnails
-    for t in u.all_thumbnails()["thumbnails"]: 
+    for t in u.all_thumbnails()["thumbnails"]:
         #only dump the informations if the user has wached the video
         if t.video_id in watched_videos:
             print(f"{u.user.user_id};{t.row};{t.col};{t.video_id};{t.timestamp}")
@@ -102,7 +102,7 @@ Get the current direct schedule, with metadata from the companion platform-api
 ```python
 from s4gpy.s4gpy import S4GAPI
 api=S4GAPI(<add your user here>,<add your password here>)
-for s in api.get_direct_api().get_direct_schedule(): 
+for s in api.get_direct_api().get_direct_schedule():
     try:
         imdb_data=s.content().imdb_id()
         genres="+".join([g["genre"] for g in imdb_data.data.genres])
@@ -120,4 +120,26 @@ Get some credentials for netflix to run a robot run
 from s4gpy.s4gpy import S4GAPI
 api=S4GAPI("foo","bar")
 login, password = api.get_credentials_api().get_credentials("netflix")
+```
+
+
+### Company Mapping API
+
+Get/Set the mappings for content and company
+
+```python
+from s4gpy.s4gpy import S4GAPI
+from s4gpy.api.companyapi import CompanyAPI
+from s4gpy.s4gsession import S4GSession
+api = S4GAPI("foo","bar")
+
+api.get_company_api().push_company("company1_cc_code",name="company 1 name",link="company 1 link")
+api.get_company_api().push_company("company2_cc_code",name="company 2 name",link="company 2 link")
+api.get_company_api().push_content("content_code",["company 1 name","company 2 name"])
+
+for company in api.get_company_api().get_companies():
+    print(f"company code {company.company_id} is {company.company().name}")
+for content in api.get_company_api().get_contents():
+    for company in content.content().companies():
+        print(f"content {content.content_id} is produced by {company.company_id}")
 ```
