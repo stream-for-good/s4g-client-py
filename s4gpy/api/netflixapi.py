@@ -14,9 +14,9 @@ class NetflixAPI:
         self.session = session
 
     def get_root(self):
-        """Publish or updated a new direct schedule."""
+        """get the root of the netflix api"""
 
-        """returns a list of users."""
+
         netflix_links = self.session.get("/api/netflix").json()
         expand_links(self.session, netflix_links)
         return munchify(netflix_links)

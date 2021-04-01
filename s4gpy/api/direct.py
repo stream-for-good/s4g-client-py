@@ -14,6 +14,10 @@ class DirectAPI(object):
         self.session = session
 
     def get_direct_schedule(self):
+        """access direct schedule for netflix fr
+
+        :return: netflix direct schedule
+        """
         schedules = self.session.get("/api/direct").json()
         for sche in schedules:
             expand_links(self.session, sche)
