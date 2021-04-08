@@ -1,3 +1,5 @@
+[![Documentation Status](https://readthedocs.org/projects/s4gpy/badge/?version=latest)](https://s4gpy.readthedocs.io/en/latest/?badge=latest)
+
 # S4Gpy a python client library for Stream-for-Good Project
 
 This client api can be used to perform analysis of S4G dataset with Python3.
