@@ -9,5 +9,4 @@ class TestUtils:
     """qsdfqsdfqsdf."""
 
     def testing(self):
-
         pass

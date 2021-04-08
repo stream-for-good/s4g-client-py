@@ -17,7 +17,10 @@ class CompanyAPI:
         """Get the root of the company mapping api"""
 
         """return a list of companies links"""
-        company_links = self.session.get("/").json()
+        resp = self.session.get("/")
+        if resp.status_code > 299:
+            raise RuntimeError(resp.text)
+        company_links = resp.json()
         expand_links(self.session, company_links)
         return munchify(company_links)
 
@@ -47,13 +50,17 @@ class CompanyAPI:
         expand_links(self.session, content_links)
         return munchify(content_links)
 
-    def push_company(self, id, name, link):
+    def push_company(self, id, name, link, country=None):
         """Publish a new company."""
         self.session.post(f'/company/{id}',
-                          json={'name': name, 'link': link})
+                          json={'name': name, 'link': link, "country": country})
+
+    def updated_company_country(self, id, country):
+        """Updates a company country"""
+        self.session.put(f'/company/{id}/country',
+                         json={"country": country})
 
     def push_content(self, id, company_names):
         """Publish a new content associated with some company names."""
         self.session.post(f'/content/{id}',
                           json={'company_names': [name for name in company_names]})
-
