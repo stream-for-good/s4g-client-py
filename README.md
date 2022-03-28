@@ -15,7 +15,7 @@ you can get a Python version with the following syntax:
 ```python
 from s4gpy.s4gpy import S4GAPI
 #first register with your vod-prime.space credentials
-api=S4GAPI("foo","bar")
+api=S4GAPI()
 #then get a user API object
 user_api=api.get_user_api()
 
@@ -64,7 +64,7 @@ Get the current direct schedule, with metadata from the companion platform-api
 
 ```python
 from s4gpy.s4gpy import S4GAPI
-api=S4GAPI(<add your user here>,<add your password here>)
+api=S4GAPI()
 for s in api.get_direct_api().get_direct_schedule():
     try:
         imdb_data=s.content().imdb_id()
@@ -82,7 +82,7 @@ Show the row/cols of every watched video for each user
 ```python
 from s4gpy.s4gpy import S4GAPI
 #create an API entrypoint
-api=S4GAPI("foo","bar")
+api=S4GAPI()
 #get the user_api
 user_api=api.get_user_api()
 
@@ -103,7 +103,7 @@ Get the current direct schedule, with metadata from the companion platform-api
 
 ```python
 from s4gpy.s4gpy import S4GAPI
-api=S4GAPI(<add your user here>,<add your password here>)
+api=S4GAPI()
 for s in api.get_direct_api().get_direct_schedule():
     try:
         imdb_data=s.content().imdb_id()
@@ -120,7 +120,7 @@ Get some credentials for netflix to run a robot run
 
 ```python
 from s4gpy.s4gpy import S4GAPI
-api=S4GAPI("foo","bar")
+api=S4GAPI()
 login, password = api.get_credentials_api().get_credentials("netflix")
 ```
 
@@ -133,7 +133,7 @@ Get/Set the mappings for content and company
 from s4gpy.s4gpy import S4GAPI
 from s4gpy.api.companyapi import CompanyAPI
 from s4gpy.s4gsession import S4GSession
-api = S4GAPI("foo","bar")
+api = S4GAPI()
 
 api.get_company_api().push_company("company1_cc_code",name="company 1 name",link="company 1 link")
 api.get_company_api().push_company("company2_cc_code",name="company 2 name",link="company 2 link")

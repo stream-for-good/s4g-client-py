@@ -14,7 +14,8 @@ class UserAPI:
 
     def get_users(self):
         """returns a list of users."""
-        users = self.session.get("/api/users").json()
+        users = self.session.get("/api/users")
+        users=users.json()
         for user in users:
             expand_links(self.session, user)
 

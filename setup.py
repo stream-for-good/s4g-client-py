@@ -14,7 +14,7 @@ with open(path.join(path.abspath(path.dirname(__file__)), 'README.md'),
 setup(
     # Basic project information
     name='s4gpy',
-    version='0.0.9',
+    version='0.1.00',
     # Authorship and online reference
     author='Nicolas Herbaut',
     author_email='nicolas.herbaut@univ-paris1.fr',
